@@ -249,8 +249,7 @@ void ordenarPorNombre(Producto inventario[], int numProductos) {
                 inventario[j] = inventario[j + 1];
                 inventario[j + 1] = temp;
             }
-        }1
-        
+        }
     }
     
 printf("\nINVENTARIO ORDENADO POR NOMBRE \n");
