@@ -4,6 +4,7 @@
 
 #define MAX_PRODUCTOS 100
 #define MAX_TRABAJADORES 100
+#define MAX_QUEJAS 100
 
 typedef struct {
     char codigo[10];
@@ -18,8 +19,15 @@ typedef struct {
     char puesto[50];
 } Trabajador;
 
+typedef struct {
+    char codigo[10];
+    char queja[100];
+} Queja;
+
+
 void administrarInventario(Producto inventario[], int *numProductos);
 void atenderClientes(Producto inventario[], int numProductos);
+void departamentoQuejas(Queja quejas[], int *numQuejas);
 void mostrarInventario(Producto inventario[], int numProductos);
 void OrdenarInventario(Producto inventario[], int numProductos);
 void ordenarPorCodigo(Producto inventario[], int numProductos);
@@ -60,9 +68,12 @@ int compararCadenas(const char cadena1[], const char cadena2[]) {
 int main() {
     Producto inventario[MAX_PRODUCTOS];
     Trabajador personal[MAX_TRABAJADORES];
+    Queja quejas[MAX_QUEJAS];
     int numProductos = 0;
     int numTrabajadores = 0;
+    int numQuejas = 0;
     int opcion;
+   
 
     do {
         printf("\nMENÚ PRINCIPAL\n");
@@ -238,7 +249,8 @@ void ordenarPorNombre(Producto inventario[], int numProductos) {
                 inventario[j] = inventario[j + 1];
                 inventario[j + 1] = temp;
             }
-        }
+        }1
+        
     }
     
 printf("\nINVENTARIO ORDENADO POR NOMBRE \n");
@@ -256,11 +268,15 @@ printf("\nINVENTARIO ORDENADO POR NOMBRE \n");
 
 void atenderClientes(Producto inventario[], int numProductos) {
     int opcion;
+     Queja quejas[MAX_QUEJAS];
+    int numQuejas = 0;
+
 
     do {
         printf("\nMENÚ DE ATENCIÓN A CLIENTES\n");
         printf("1. Realizar venta\n");
         printf("2. Mostrar inventario\n");
+        printf("3. Departamento de quejas\n");
         printf("0. Volver al menú principal\n");
         printf("Ingrese una opción: ");
         scanf("%d", &opcion);
@@ -300,6 +316,9 @@ void atenderClientes(Producto inventario[], int numProductos) {
             case 2:
                 mostrarInventario(inventario, numProductos);
                 break;
+            case 3:
+                departamentoQuejas(quejas, &numQuejas);
+                break;
             case 0:
                 printf("Volviendo al menú principal...\n");
                 break;
@@ -308,7 +327,32 @@ void atenderClientes(Producto inventario[], int numProductos) {
                 break;
         }
     } while (opcion != 0);
+
+    
 }
+
+void departamentoQuejas(Queja quejas[], int *numQuejas) {
+    if (*numQuejas < MAX_QUEJAS) {
+        Queja nuevaQueja;
+        printf("\nDEPARTAMENTO DE QUEJAS\n");
+        printf("Ingrese el código del producto: ");
+        scanf("%s", nuevaQueja.codigo);
+
+        // Limpiar el búfer del teclado después de leer el código
+        while (getchar() != '\n');
+
+        printf("Ingrese la queja: ");
+        fgets(nuevaQueja.queja, sizeof(nuevaQueja.queja), stdin);
+        nuevaQueja.queja[strcspn(nuevaQueja.queja, "\n")] = '\0';  // Eliminar el salto de línea
+
+        quejas[*numQuejas] = nuevaQueja;
+        (*numQuejas)++;
+        printf("Queja registrada correctamente.\n");
+    } else {
+        printf("No se pueden agregar más quejas. Límite máximo alcanzado.\n");
+    }
+}
+
 
 /*APARTADO DE ADMINISTRACION DE PERSONAL*/
 
